@@ -28,9 +28,9 @@ angular
       .when('/song', {
         templateUrl: 'views/song.html',
         controller: 'SongCtrl',
-        controllerAs: 'vm'
+        service: 'SongService'
       })
       .otherwise({
-        redirectTo: '/'
+        redirectTo: '/song'
       });
   });
