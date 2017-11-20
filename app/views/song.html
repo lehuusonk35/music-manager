@@ -25,7 +25,7 @@
 <table class="table table-bordered">
   <thead>
   <tr>
-    <th><input type="checkbox" ng-model="IsAllChecked" ng-change="CheckUncheckAll()" /></th>
+    <th><input type="checkbox" ng-checked="isSelectedAll"  ng-click="selectAll()" /></th>
     <th>Name</th>
     <th>Artist</th>
     <th>Action</th>
@@ -33,7 +33,7 @@
   </thead>
   <tbody>
   <tr ng-repeat="song in songs">
-    <td><input type="checkbox" ng-model="m.Selected" ng-change="CheckUncheckHeader()"/></td>
+    <td><input type="checkbox" ng-checked="song.isSelected" ng-click="selectSong(song)"  /></td>
     <td>{{song.name}}</td>
     <td>{{song.artist}}</td>
     <td><button ng-click="edit(song.id)"><span class="glyphicon glyphicon-edit"></span> Edit</button><button ng-click="delete(song.id)"><span class="glyphicon glyphicon-trash"></span> Detele</button></td>
