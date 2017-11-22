@@ -14,40 +14,47 @@ angular.module('myngappAppApp')
       {
         id: 0,
         name: 'Radioactive',
-        artist: 'Imagine Dragon'
+        artist: 'Imagine Dragon',
+        isSelected:false
       },
       {
         id: 1,
         name: '	Rolling in the deep',
-        artist: '	Adele'
+        artist: '	Adele',
+        isSelected:false
       },
       {
         id: 2,
         name: 'Uninstall',
-        artist: 'Chiaki Isikawa'
+        artist: 'Chiaki Isikawa',
+        isSelected:false
       },
       {
         id: 3,
         name: '	Viva la vida',
-        artist: 'Coldplay'
+        artist: 'Coldplay',
+        isSelected:false
       }
     ];
     this.save = function (song) {
+    if(song.name !== undefined && song.artist !== undefined){
       if (song.id == null ) {
         song.id = oid++;
         songs.push(song);
-      } else {
+      }
+      else {
         for (var i = 0; i < songs.length; i++) {
-          if (songs[i].id == song.id ) {
+          if (songs[i].id === song.id ) {
             songs[i] = song;
           }
         }
       }
+    }
 
     }
     this.get = function (id) {
       for (var i = 0; i < songs.length; i++) {
-        if (songs[i].id == id) {
+        if (songs[i].id === id) {
           return songs[i];
         }
       }
@@ -55,7 +62,7 @@ angular.module('myngappAppApp')
     }
     this.delete = function (id) {
       for (var i = 0; i < songs.length; i++) {
-        if (songs[i].id == id) {
+        if (songs[i].id === id) {
           songs.splice(i, 1);
         }
       }

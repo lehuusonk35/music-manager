@@ -10,8 +10,8 @@
  */
 angular
   .module('myngappAppApp', [
-    'ngRoute'
-
+    'ngRoute',
+    'ngMaterial'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -27,6 +27,15 @@ angular
       })
       .when('/song', {
         templateUrl: 'views/song.html',
+        controller: 'SongCtrl',
+        service: 'SongService'
+      })
+      .when('/confirm', {
+        templateUrl: 'views/confirm.html',
+        controller: 'dialogController'
+      })
+      .when('/addsong', {
+        templateUrl: 'views/addsong.html',
         controller: 'SongCtrl',
         service: 'SongService'
       })
