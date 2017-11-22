@@ -19,16 +19,13 @@ angular.module('myngappAppApp').controller('SongCtrl', function ($scope, SongSer
     //window.location = "#!/song";
     $location.path('#!/song');
   };
-
   $scope.delete = function (id) {
     SongService.delete(id);
   };
-
   $scope.edit = function (id) {
     // console.log($scope.selectedList);
     $scope.newsong = angular.copy(SongService.get(id));
   };
-
   $scope.selectAll = function(){
     $scope.isSelectedAll= !$scope.isSelectedAll;
     $scope.selectedList = [];
