@@ -1,0 +1,36 @@
+<div class="tool-manage">
+  <h1 class="title-manage">Manage Songs</h1>
+
+  <div class="tool-main">
+    <div class="add-song"><a ng-click="addPage()"><span class="glyphicon glyphicon-plus"></span> Add</a></div>
+    <div class="detele-song">
+      <md-button class = "md-primary md-raised" ng-disabled="!prova()" ng-click = "showConfirm($event)" flex = "100"  flex-gt-md = "auto">Delete</md-button>
+    </div>
+    <div class="search-song">
+      <md-button class = "md-primary md-raised" ng-init="test = false" ng-click="test = !test">
+        <span class="glyphicon glyphicon-search"></span>
+        Search
+        </button>
+    </div>
+    <input ng-show="test" ng-model="query" />
+  </div>
+</div>
+
+<table class="table table-bordered">
+  <thead>
+  <tr>
+    <th><input type="checkbox" ng-checked="isSelectedAll"  ng-click="selectAll()" /></th>
+    <th>Name</th>
+    <th>Artist</th>
+    <th>Action</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="song in songs | filter: query">
+    <td><input type="checkbox" ng-checked="song.isSelected" ng-click="selectSong(song)" /></td>
+    <td>{{song.name}}</td>
+    <td>{{song.artist}}</td>
+    <td><a ng-click="edit(song.id)"><span class="glyphicon glyphicon-edit"></span> Edit</a><a href="javascript:void();" ng-click="delete(song.id)"><span class="glyphicon glyphicon-trash"></span> Detele</a></td>
+  </tr>
+  </tbody>
+</table>

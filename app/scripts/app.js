@@ -26,19 +26,9 @@ angular
         controllerAs: 'vm'
       })
       .when('/song', {
-        templateUrl: 'views/song.html',
-        controller: 'SongCtrl',
-        service: 'SongService'
+        template: '<song-list></song-list>'
       })
-      .when('/confirm', {
-        templateUrl: 'views/confirm.html',
-        controller: 'dialogController'
-      })
-      .when('/addsong', {
-        templateUrl: 'views/addsong.html',
-        controller: 'SongCtrl',
-        service: 'SongService'
-      })
+
       .otherwise({
         redirectTo: '/song'
       });
