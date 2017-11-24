@@ -38,7 +38,7 @@ angular.module('myngappAppApp')
     ];
     this.save = function (song) {
       if(typeof song.name !== 'undefined' && typeof song.artist !== 'undefined'){
-        if (song.id == null ) {
+        if (song.id == null  || song.id == '') {
           song.id = oid++;
           songs.push(song);
         }
@@ -70,4 +70,37 @@ angular.module('myngappAppApp')
     this.list = function () {
       return songs;
     }
+
+    this.action = {
+      view : {
+        id : 'main',
+        url : 'scripts/song/mainsong/mainsong.html',
+
+      },
+      create : {
+        id : 'create',
+        url : 'scripts/song/add/add.template.html',
+
+      },
+      edit : {
+        id : 'edit',
+        url : 'scripts/song/add/add.template.html',
+      }
+    };
+
+    this.cache = {
+      currAction : this.action.view,
+      songModel : {
+        id : '',
+        name : '',
+        artist : '',
+        selected : false
+      },
+      reset : function () {
+        this.songModel.id = '';
+        this.songModel.name = '';
+        this.songModel.artist = '';
+        this.songModel.selected = false;
+      }
+    };
   });

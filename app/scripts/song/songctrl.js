@@ -10,25 +10,43 @@
 
 angular.module('myngappAppApp').controller('SongCtrl', function ($scope, SongService, $mdDialog, $location) {
   $scope.songs = SongService.list();
+  $scope.bread = 'Song';
+  $scope.title = 'Manage Songs';
   $scope.selectedList = [];
   $scope.isSelectedAll = false;
-  $scope.newsong = {};
+  $scope.newsong = SongService.cache.songModel;
+  $scope.templateObj = SongService.cache.currAction;
   $scope.saveSong = function () {
-    SongService.save($scope.newsong);
+    SongService.save(angular.copy($scope.newsong));
     $scope.isSelectedAll = allChecked();
+    SongService.cache.reset();
+    $scope.templateObj = SongService.cache.currAction = SongService.action.view;
     //window.location = "#!/song";
-    $location.path('#!/song');
+    //$location.path('#!/song');
   };
   $scope.delete = function (id) {
-    SongService.delete(id);
+    var confirm = $mdDialog.confirm()
+      .title('Are you sure to delete the record?')
+      .textContent('Record will be deleted permanently.')
+      .targetEvent(event)
+      .ok('Yes')
+      .cancel('No');
+    $mdDialog.show(confirm).then(function() {
+      SongService.delete(id);
+    }, function() {
+      $scope.status = 'You decided to keep your record.';
+    });
   };
   $scope.edit = function (id) {
     // console.log($scope.selectedList);
-    $scope.newsong = angular.copy(SongService.get(id));
-    $scope.templateObj = {
+    var song = angular.copy(SongService.get(id));
+    SongService.cache.songModel = song;
+    $scope.newsong = SongService.cache.songModel;
+    $scope.templateObj = SongService.cache.currAction = SongService.action.edit;
+    /*$scope.templateObj = {
       url: 'scripts/song/add/add.template.html',
       id: 'edit'
-    }
+    }*/
   };
   $scope.selectAll = function(){
     $scope.isSelectedAll= !$scope.isSelectedAll;
@@ -93,22 +111,26 @@ angular.module('myngappAppApp').controller('SongCtrl', function ($scope, SongSer
     });
   };
 
-  $scope.templateObj = {
+  /*$scope.templateObj = {
     url: 'scripts/song/mainsong/mainsong.html',
     id: 'main'
-  }
+  };*/
 
   $scope.addPage = function () {
-    $scope.templateObj = {
-      url: 'scripts/song/add/add.template.html',
-      id: 'create'
-    }
+    $scope.newsong = SongService.cache.songModel;
+    $scope.templateObj = SongService.cache.currAction = SongService.action.create;
+    // $scope.templateObj = {
+    //   url: 'scripts/song/add/add.template.html',
+    //   id: 'create'
+    // }
   };
   $scope.mainSong = function () {
-    $scope.newsong = null;
-    $scope.templateObj = {
+    //$scope.newsong = null;
+    SongService.cache.reset();
+    $scope.templateObj = SongService.cache.currAction = SongService.action.view;
+    /*$scope.templateObj = {
       url: 'scripts/song/mainsong/mainsong.html',
       id: 'main'
-    }
+    }*/
   };
 });
