@@ -36,9 +36,12 @@ angular.module('myngappAppApp')
         isSelected:false
       }
     ];
+    this.isSelectedAll =  {
+      check: false
+    };
     this.save = function (song) {
-      if(typeof song.name !== 'undefined' && typeof song.artist !== 'undefined'){
-        if (song.id == null  || song.id == '') {
+      if( song.name !== '' && song.artist !== '' ){
+        if ( song.id !== null  || song.id !== '') {
           song.id = oid++;
           songs.push(song);
         }
@@ -51,7 +54,7 @@ angular.module('myngappAppApp')
         }
       }
 
-    }
+    };
     this.get = function (id) {
       for (var i = 0; i < songs.length; i++) {
         if (songs[i].id === id) {
@@ -59,32 +62,33 @@ angular.module('myngappAppApp')
         }
       }
 
-    }
+    };
     this.delete = function (id) {
       for (var i = 0; i < songs.length; i++) {
         if (songs[i].id === id) {
           songs.splice(i, 1);
+          break;
         }
       }
-    }
+    };
     this.list = function () {
       return songs;
-    }
+    };
 
     this.action = {
       view : {
         id : 'main',
-        url : 'scripts/song/mainsong/mainsong.html',
+        url : 'scripts/song/mainsong/mainsong.html'
 
       },
       create : {
         id : 'create',
-        url : 'scripts/song/add/add.template.html',
+        url : 'scripts/song/add/add.template.html'
 
       },
       edit : {
         id : 'edit',
-        url : 'scripts/song/add/add.template.html',
+        url : 'scripts/song/add/add.template.html'
       }
     };
 

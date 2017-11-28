@@ -1,12 +1,17 @@
-<form class="well" >
-
-  <label>Name</label>
-  <input type="text" name="name" ng-model="newsong.name" />
-  <label>Artist</label>
-  <input type="text" name="email" ng-model="newsong.artist" />
+<form class="well" name="signUpForm" ng-submit="submitUser()" novalidate>
+  <div class="form-group">
+    <label ng-class="{ errorlabel: submitted && signUpForm.dob.$invalid }">Song name</label>
+    <input ng-class="{ errorinput: submitted && signUpForm.dob.$invalid }" name="dob" class="form-control" type="text" name="name" ng-model="newsong.name" required/>
+    <span style="clear: both; display: block; margin-left: 105px; padding:3px; color:red" ng-show="submitted && signUpForm.dob.$invalid">Song name cannot be empty</span>
+  </div>
+  <div class="form-group">
+    <label>Artist</label>
+    <input class="form-control" type="text" name="email" ng-model="newsong.artist" />
+  </div>
   <br/>
   <input type="hidden" ng-model="newsong.id" />
   <input type="button" ng-show="templateObj.id === 'create'" value="Save" ng-click="saveSong()" class="btn btn-primary" />
   <input type="button" ng-show="templateObj.id === 'edit'" value="Edit" ng-click="saveSong()" class="btn btn-primary" />
   <input type="button"  value="Cancel" ng-click="mainSong()" class="btn btn-primary" />
+
 </form>

@@ -32,27 +32,28 @@
 
     <!-- Add your site or application content here -->
     <div class="header">
+
       <div class="navbar navbar-default" role="navigation">
         <div class="container">
           <div class="navbar-header">
-
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#js-navbar-collapse">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-
             <a class="navbar-brand" href="#!/"><span class="glyphicon glyphicon-music"></span>Music manager</a>
+            <div ng-controller="menuCtrl as vm">
+              <button type="button" class="navbar-toggle collapsed" aria-label="Menu" ng-click="vm.navOpen = !vm.navOpen">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <div class="hidden-sm hidden-md nav-mobile" ng-show="vm.navOpen">
+                <ul class="nav nav-pills nav-stacked" >
+                  <li class="active"><a href="#!/">Home</a></li>
+                  <li><a ng-href="#!/song">Song</a></li>
+                  <li><a ng-href="#!/playlist">Play List</a></li>
+                </ul>
+              </div>
+            </div>
           </div>
 
-          <div class="collapse hidden-sm hidden-md" id="js-navbar-collapse">
-            <ul class="nav navbar-nav">
-              <li class="active"><a href="#!/">Home</a></li>
-              <li><a ng-href="#!/song">Song</a></li>
-              <li><a ng-href="#!/playlist">Play List</a></li>
-            </ul>
-          </div>
         </div>
       </div>
     </div>
@@ -75,16 +76,17 @@
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
         <script src="scripts/controllers/main.js"></script>
-        <script src="scripts/controllers/SongCtrl.js"></script>
+        <!--<script src="scripts/controllers/SongCtrl.js"></script>-->
         <script src="scripts/controllers/PlayListCtrl.js"></script>
-        <script src="scripts/filters/myfilter.js"></script>
-        <script src="scripts/directives/mydirective.js"></script>
-        <script src="scripts/services/songservice.js"></script>
+        <!--<script src="scripts/filters/myfilter.js"></script>-->
+        <!--<script src="scripts/directives/mydirective.js"></script>-->
+        <!--<script src="scripts/services/songservice.js"></script>-->
 
     <script src="scripts/song/song.component.js"></script>
     <script src="scripts/song/songctrl.js"></script>
     <script src="scripts/song/songserv.js"></script>
     <script src="scripts/share/sidebar.component.js"></script>
+    <script src="scripts/controllers/menuCtrl.js"></script>
         <!-- endbuild -->
 
 </body>

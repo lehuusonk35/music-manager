@@ -8,26 +8,34 @@
  * Controller of the myngappAppApp
  */
 
-angular.module('myngappAppApp').controller('SongCtrl', function ($scope, SongService, $mdDialog, $location) {
+angular.module('myngappAppApp').controller('SongCtrl', ['$scope', 'SongService', '$mdDialog' ,function ($scope, SongService, $mdDialog) {
   $scope.songs = SongService.list();
   $scope.bread = 'Song';
   $scope.title = 'Manage Songs';
   $scope.selectedList = [];
-  $scope.isSelectedAll = false;
+  $scope.isSelectedAll = SongService.isSelectedAll.check;
+  $scope.err = false;
   $scope.newsong = SongService.cache.songModel;
   $scope.templateObj = SongService.cache.currAction;
   $scope.saveSong = function () {
-    SongService.save(angular.copy($scope.newsong));
-    $scope.isSelectedAll = allChecked();
-    SongService.cache.reset();
-    $scope.templateObj = SongService.cache.currAction = SongService.action.view;
+    if ($scope.newsong.name !== '' && $scope.newsong.artist !== '') {
+      SongService.save(angular.copy($scope.newsong));
+      $scope.isSelectedAll = allChecked();
+      SongService.cache.reset();
+      $scope.templateObj = SongService.cache.currAction = SongService.action.view;
+      $scope.submitted = false;
+    }
+    else {
+      //alert('cant song name and song artist empty ');
+      $scope.submitted = true;
+    }
     //window.location = "#!/song";
     //$location.path('#!/song');
   };
   $scope.delete = function (id) {
     var confirm = $mdDialog.confirm()
-      .title('Are you sure to delete the record?')
-      .textContent('Record will be deleted permanently.')
+      .title('Delete song')
+      .textContent('Are you sure you want delete this song ?')
       .targetEvent(event)
       .ok('Yes')
       .cancel('No');
@@ -68,6 +76,7 @@ angular.module('myngappAppApp').controller('SongCtrl', function ($scope, SongSer
       for(var i =0;i<$scope.selectedList.length;i++){
         if($scope.selectedList[i].id === song.id){
           $scope.selectedList.splice(i,1);
+          break;
         }
       }
     }
@@ -85,19 +94,19 @@ angular.module('myngappAppApp').controller('SongCtrl', function ($scope, SongSer
 
     return result;
   }
-  $scope.prova = function(){
-    for(var i =0;i<$scope.songs.length;i++){
-      if($scope.songs[i].isSelected){
-        return true;
-      }
-    }
-  };
+  // $scope.prova = function(){
+  //   for(var i =0;i<$scope.songs.length;i++){
+  //     if($scope.songs[i].isSelected){
+  //       return true;
+  //     }
+  //   }
+  // };
   $scope.status = '';
 
   $scope.showConfirm = function(event) {
     var confirm = $mdDialog.confirm()
-      .title('Are you sure to delete the record?')
-      .textContent('Record will be deleted permanently.')
+      .title('Delete multiple songs')
+      .textContent('Are you sure you want delete this selected song ?')
       .targetEvent(event)
       .ok('Yes')
       .cancel('No');
@@ -133,4 +142,4 @@ angular.module('myngappAppApp').controller('SongCtrl', function ($scope, SongSer
       id: 'main'
     }*/
   };
-});
+}]);

@@ -1,2 +1,13 @@
-<sider-bar></sider-bar>
-<p>{{vm.name}}</p>
+<div class="row">
+  <sider-bar class="hidden-xs"></sider-bar>
+  <div class="col-md-9">
+    <nav aria-label="breadcrumb" role="navigation">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{bread}}</li>
+      </ol>
+    </nav>
+
+    <div ng-include="templateObj.url"></div>
+  </div>
+</div>
