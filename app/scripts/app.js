@@ -10,8 +10,8 @@
  */
 angular
   .module('myngappAppApp', [
-    'ngRoute'
-
+    'ngRoute',
+    'ngMaterial'
   ])
   .config(function ($routeProvider) {
     $routeProvider
@@ -26,10 +26,9 @@ angular
         controllerAs: 'vm'
       })
       .when('/song', {
-        templateUrl: 'views/song.html',
-        controller: 'SongCtrl',
-        service: 'SongService'
+        template: '<song-list></song-list>'
       })
+
       .otherwise({
         redirectTo: '/song'
       });
