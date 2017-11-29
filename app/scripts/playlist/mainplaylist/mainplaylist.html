@@ -1,0 +1,37 @@
+<div class="tool-manage">
+  <h1 class="title-manage">{{title}}</h1>
+
+  <div class="tool-main">
+    <div class="add-song" ng-show="!test"><md-button class = "md-primary md-raised" ng-click="addPage()"><span class="glyphicon glyphicon-plus"></span> Add</md-button></div>
+    <div class="detele-song" ng-show="!test">
+      <md-button class = "md-primary md-raised" ng-click = "showConfirm($event)" flex = "100"  flex-gt-md = "auto">Delete</md-button>
+    </div>
+    <div class="search-song">
+      <md-button class = "md-primary md-raised" ng-init="test = false" ng-click="test = !test">
+        <span class="glyphicon glyphicon-search"></span>
+        Search
+      </md-button>
+      <input ng-show="test" ng-model="query" />
+    </div>
+
+  </div>
+</div>
+
+<table class="table table-bordered table-striped table-reponsive">
+  <thead>
+  <tr class="title-table">
+    <th><input type="checkbox" ng-checked="isSelectedAll"  ng-click="selectAll()" /></th>
+    <th>Name</th>
+    <th>Artist</th>
+    <th>Action</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="list in lists | filter: query">
+    <td><input type="checkbox" ng-checked="list.isSelected" ng-click="selectSong(list)" /></td>
+    <td>{{list.name}}</td>
+    <td>{{list.desc}}</td>
+    <td class="action"><a ng-click="edit(list.id)"><span class="glyphicon glyphicon-edit"></span> Edit</a><a ng-click="delete(song.id)"><span class="glyphicon glyphicon-trash"></span> Detele</a></td>
+  </tr>
+  </tbody>
+</table>

@@ -10,8 +10,8 @@
   </div>
   <br/>
   <input type="hidden" ng-model="newsong.id" />
-  <input type="button" ng-show="templateObj.id === 'create'" value="Save" ng-click="saveSong()" class="btn btn-primary" />
-  <input type="button" ng-show="templateObj.id === 'edit'" value="Edit" ng-click="saveSong()" class="btn btn-primary" />
+  <input type="button" ng-show="templateObj.id === 'create'" value="Save" ng-click="saveSong(true)" class="btn btn-primary" />
+  <input type="button" ng-show="templateObj.id === 'edit'" value="Edit" ng-click="saveSong(false)" class="btn btn-primary" />
   <input type="button"  value="Cancel" ng-click="mainSong()" class="btn btn-primary" />
 
 </form>

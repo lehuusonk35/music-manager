@@ -9,11 +9,11 @@
  */
 
 angular.module('myngappAppApp').controller('SongCtrl', ['$scope', 'SongService', '$mdDialog' ,function ($scope, SongService, $mdDialog) {
-  $scope.songs = SongService.list();
+  $scope.songs = SongService.listsong();
   $scope.bread = 'Song';
   $scope.title = 'Manage Songs';
   $scope.selectedList = [];
-  $scope.isSelectedAll = SongService.isSelectedAll.check;
+  $scope.isSelectedAll = false;
   $scope.err = false;
   $scope.newsong = SongService.cache.songModel;
   $scope.templateObj = SongService.cache.currAction;

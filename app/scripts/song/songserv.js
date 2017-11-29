@@ -36,9 +36,7 @@ angular.module('myngappAppApp')
         isSelected:false
       }
     ];
-    this.isSelectedAll =  {
-      check: false
-    };
+
     this.save = function (song) {
       if( song.name !== '' && song.artist !== '' ){
         if ( song.id !== null  || song.id !== '') {
@@ -53,8 +51,9 @@ angular.module('myngappAppApp')
           }
         }
       }
-
     };
+
+
     this.get = function (id) {
       for (var i = 0; i < songs.length; i++) {
         if (songs[i].id === id) {
@@ -63,6 +62,7 @@ angular.module('myngappAppApp')
       }
 
     };
+
     this.delete = function (id) {
       for (var i = 0; i < songs.length; i++) {
         if (songs[i].id === id) {
@@ -71,7 +71,7 @@ angular.module('myngappAppApp')
         }
       }
     };
-    this.list = function () {
+    this.listsong = function () {
       return songs;
     };
 
