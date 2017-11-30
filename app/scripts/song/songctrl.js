@@ -59,17 +59,25 @@ angular.module('myngappAppApp').controller('SongCtrl', ['$scope', 'SongService',
   $scope.selectAll = function(){
     $scope.isSelectedAll= !$scope.isSelectedAll;
     $scope.selectedList = [];
-    for(var i =0;i<$scope.songs.length;i++){
-      $scope.songs[i].isSelected = $scope.isSelectedAll;
-      if($scope.songs[i].isSelected){
-        $scope.selectedList.push($scope.songs[i]);
+    for(var i in SongService.songsSelectingList){
+      SongService.songsSelectingList[i] = $scope.isSelectedAll;
+      if(SongService.songsSelectingList[i]){
+        var idx = Object.keys(SongService.songsSelectingList).indexOf(i);
+        $scope.selectedList.push($scope.songs[idx]);
       }
     }
+    // for(var i =0;i<$scope.songs.length;i++){
+    //   $scope.songs[i].isSelected = $scope.isSelectedAll;
+    //   if($scope.songs[i].isSelected){
+    //     $scope.selectedList.push($scope.songs[i]);
+    //   }
+    // }
   };
 
   $scope.selectSong = function(song){
-    song.isSelected=!song.isSelected;
-    if(song.isSelected){
+    // song.isSelected=!song.isSelected;
+    SongService.songsSelectingList[song.id] = !SongService.songsSelectingList[song.id];
+    if(SongService.songsSelectingList[song.id]){
       $scope.selectedList.push(song);
     }
     else {
@@ -83,16 +91,26 @@ angular.module('myngappAppApp').controller('SongCtrl', ['$scope', 'SongService',
     $scope.isSelectedAll = allChecked();
   };
 
+  $scope.isSelected = function (songId) {
+    return SongService.songsSelectingList[songId];
+  };
+
   function allChecked(){
-    var result = true;
-    for(var i =0;i<$scope.songs.length;i++){
-      if(!$scope.songs[i].isSelected){
-        result = false;
-        break;
+    // var result = true;
+    for(var i in SongService.songsSelectingList){
+      if(!SongService.songsSelectingList[i]){
+        return false
       }
     }
+    return true;
+    // for(var i =0;i<$scope.songs.length;i++){
+    //   if(!$scope.songs[i].isSelected){
+    //     result = false;
+    //     break;
+    //   }
+    // }
 
-    return result;
+    // return result;
   }
   // $scope.prova = function(){
   //   for(var i =0;i<$scope.songs.length;i++){

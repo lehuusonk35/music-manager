@@ -8,41 +8,43 @@
  * Service in the myngappAppApp.
  */
 angular.module('myngappAppApp')
-  .service('playListService', function () {
+  .service('playListService', function (SongService) {
     var oid = 4;
     var lists = [
       {
         id: 0,
         name: 'Play list 01',
         desc: 'This is play list 01',
-        listOfSongs:[{id: 0, name: 'Radioactive'},{id: 1,name: 'Rolling in the deep'}],
+        listOfSongs:[{id: 0, name: 'Radioactive', artist: 'Imagine Dragon'},{id: 1,name: 'Rolling in the deep', artist: 'Adele' }],
         isSelected:false
       },
       {
         id: 1,
         name: 'Play list 02',
         desc: 'This is play list 02',
-        listOfSongs:[{id: 0, name: 'Radioactive'},{id: 2, name: 'Uninstall'}],
+        listOfSongs:[{id: 0, name: 'Radioactive', artist: 'Imagine Dragon'},{id: 2, name: 'Uninstall', artist: 'Chiaki Isikawa'}],
         isSelected:false
       },
       {
         id: 2,
         name: 'Play list 03',
         desc: 'This is play list 03',
-        listOfSongs:[{id: 3, name: 'Viva la vida'},{id: 1,name: 'Rolling in the deep'}],
+        listOfSongs:[{id: 3, name: 'Viva la vida', artist: 'Coldplay'},{id: 1,name: 'Rolling in the deep', artist: 'Adele'}],
         isSelected:false
       },
       {
         id: 3,
         name: 'Play list 04',
         desc: 'This is play list 04',
-        listOfSongs:[{id: 0, name: 'Radioactive'},{id: 3, name: 'Viva la vida'}],
+        listOfSongs:[{id: 0, name: 'Radioactive', artist: 'Imagine Dragon'},{id: 3, name: 'Viva la vida', artist: 'Coldplay'}],
         isSelected:false
       }
     ];
+
+
     this.save = function (list) {
       if( list.name !== '' && list.desc !== '' ){
-        if ( list.id !== null  || list.id !== '') {
+        if (!list.id) {
           list.id = oid++;
           lists.push(list);
         }
@@ -72,6 +74,7 @@ angular.module('myngappAppApp')
         }
       }
     };
+
     this.list = function () {
       return lists;
     };
@@ -93,8 +96,9 @@ angular.module('myngappAppApp')
       }
     };
 
-    this.cache = {
+    var cache = {
       currAction : this.action.view,
+      songsSelectingList : {},
       listModel : {
         id : '',
         name : '',
@@ -108,6 +112,22 @@ angular.module('myngappAppApp')
         this.listModel.desc = '';
         this.listModel.listOfSongs = '';
         this.listModel.isSelected = false;
+        for(var i in this.songsSelectingList){
+          this.songsSelectingList[i] = false;
+        }
       }
     };
+    this.cache = cache;
+
+    init();
+
+    function init() {
+      //init selecting property
+      var songs = SongService.listsong();
+      for(var i in songs){
+        cache.songsSelectingList[songs[i].id] = false;
+      }
+    }
+
+
   });
