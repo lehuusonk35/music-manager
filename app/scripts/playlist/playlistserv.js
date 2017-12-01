@@ -10,33 +10,34 @@
 angular.module('myngappAppApp')
   .service('playListService', function (SongService) {
     var oid = 4;
+    var songs = SongService.listsong();
     var lists = [
       {
         id: 0,
         name: 'Play list 01',
         desc: 'This is play list 01',
-        listOfSongs:[{id: 0, name: 'Radioactive', artist: 'Imagine Dragon'},{id: 1,name: 'Rolling in the deep', artist: 'Adele' }],
+        listOfSongs:[songs[0],songs[1]],
         isSelected:false
       },
       {
         id: 1,
         name: 'Play list 02',
         desc: 'This is play list 02',
-        listOfSongs:[{id: 0, name: 'Radioactive', artist: 'Imagine Dragon'},{id: 2, name: 'Uninstall', artist: 'Chiaki Isikawa'}],
+        listOfSongs:[songs[1],songs[2]],
         isSelected:false
       },
       {
         id: 2,
         name: 'Play list 03',
         desc: 'This is play list 03',
-        listOfSongs:[{id: 3, name: 'Viva la vida', artist: 'Coldplay'},{id: 1,name: 'Rolling in the deep', artist: 'Adele'}],
+        listOfSongs:[songs[3],songs[2]],
         isSelected:false
       },
       {
         id: 3,
         name: 'Play list 04',
         desc: 'This is play list 04',
-        listOfSongs:[{id: 0, name: 'Radioactive', artist: 'Imagine Dragon'},{id: 3, name: 'Viva la vida', artist: 'Coldplay'}],
+        listOfSongs:[songs[2],songs[3]],
         isSelected:false
       }
     ];
@@ -44,19 +45,22 @@ angular.module('myngappAppApp')
 
     this.save = function (list) {
       if( list.name !== '' && list.desc !== '' ){
-        if (!list.id) {
+        if (list.id !== undefined || list.id !== null) {
           list.id = oid++;
           lists.push(list);
         }
-        else {
-          for (var i = 0; i < lists.length; i++) {
-            if (lists[i].id === list.id ) {
-              lists[i] = list;
-            }
-          }
-        }
       }
 
+    };
+    this.edit = function (list) {
+      if( list.name !== '' && list.desc !== '' ){
+      for (var i = 0; i < lists.length; i++) {
+        if (lists[i].id === list.id) {
+          lists[i] = list;
+          break;
+        }
+      }
+      }
     };
     this.get = function (id) {
       for (var i = 0; i < lists.length; i++) {
@@ -92,7 +96,7 @@ angular.module('myngappAppApp')
       },
       edit : {
         id : 'edit',
-        url : 'scripts/playlist/add/addplaylist.html'
+        url : 'scripts/playlist/edit/editplaylist.html'
       }
     };
 
@@ -110,7 +114,7 @@ angular.module('myngappAppApp')
         this.listModel.id = '';
         this.listModel.name = '';
         this.listModel.desc = '';
-        this.listModel.listOfSongs = '';
+        this.listModel.listOfSongs = [];
         this.listModel.isSelected = false;
         for(var i in this.songsSelectingList){
           this.songsSelectingList[i] = false;
