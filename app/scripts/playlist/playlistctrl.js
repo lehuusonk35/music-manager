@@ -18,7 +18,7 @@ angular.module('myngappAppApp').controller('playListCtrl', ['$scope', 'playListS
   $scope.newlist = playListService.cache.listModel;
   $scope.templateObj = playListService.cache.currAction;
 
-  $scope.saveSong = function () {
+  $scope.savePlayList = function () {
     if ($scope.newlist.name !== '' && $scope.newlist.desc !== '') {
       playListService.save(angular.copy($scope.newlist));
       $scope.listSongsAdd = $scope.songs;
@@ -31,7 +31,7 @@ angular.module('myngappAppApp').controller('playListCtrl', ['$scope', 'playListS
       $scope.submitted = true;
     }
   };
-  $scope.editSong = function () {
+  $scope.editPlayList = function () {
     if ($scope.newlist.name !== '' && $scope.newlist.desc !== '') {
       playListService.edit(angular.copy($scope.newlist));
       $scope.listSongsAdd = $scope.songs;
@@ -156,7 +156,7 @@ angular.module('myngappAppApp').controller('playListCtrl', ['$scope', 'playListS
     //   id: 'create'
     // }
   };
-  $scope.mainSong = function () {
+  $scope.mainPlayList = function () {
     //$scope.newsong = null;
     playListService.cache.reset();
     $scope.listSongsAdd = $scope.songs;
@@ -336,7 +336,26 @@ angular.module('myngappAppApp').controller('playListCtrl', ['$scope', 'playListS
     });
   };
 
-  $scope.delSongEdit = function(event) {
+  $scope.delSongEdit = function(id) {
+    var confirm = $mdDialog.confirm()
+      .title('Delete multiple songs')
+      .textContent('Are you sure you want delete this selected song ?')
+      .targetEvent(event)
+      .ok('Yes')
+      .cancel('No');
+    $mdDialog.show(confirm).then(function() {
+      for ( var i = 0; i < $scope.newlist.listOfSongs.length; i++) {
+        if($scope.newlist.listOfSongs[i].id === id) {
+          $scope.newlist.listOfSongs.splice(i, 1);
+        }
+      }
+      pushSongsInListEdit();
+    }, function() {
+      $scope.status = 'You decided to keep your record.';
+    });
+  };
+
+  $scope.delSongEditAll = function(event) {
     var confirm = $mdDialog.confirm()
       .title('Delete multiple songs')
       .textContent('Are you sure you want delete this selected song ?')
@@ -345,27 +364,32 @@ angular.module('myngappAppApp').controller('playListCtrl', ['$scope', 'playListS
       .cancel('No');
     $mdDialog.show(confirm).then(function() {
       for ( var i = 0; i < $scope.selectedList.length; i++) {
-        /*var id = $scope.selectedList[i].id;
-         var name = $scope.selectedList[i].name;
-         var artist = $scope.selectedList[i].artist;*/
-        // $scope.selectedList.name.push($scope.lists.listOfSongs[i]);
-        $scope.listSongsEdit.push($scope.selectedList[i]);
-        $scope.listSongsEdit = _.unionBy($scope.listSongsEdit, 'id');
+        $scope.newlist.listOfSongs = _.differenceWith($scope.newlist.listOfSongs, $scope.selectedList, function (o1, o2) {
+          return o1['id'] === o2['id']
+        });
       }
+      pushSongsInListEdit();
     }, function() {
       $scope.status = 'You decided to keep your record.';
     });
   };
 
-
   function deleteSong() {
-    $scope.listSongsAdd = _.differenceWith($scope.listSongsAdd, $scope.newlist.listOfSongs, _.isEqual);
-  };
-
-  function deleteSongsInListEdit() {
-    $scope.listSongsEdit = _.differenceWith($scope.listSongsEdit, $scope.newlist.listOfSongs, _.isEqual);
+    $scope.listSongsAdd = _.differenceWith($scope.listSongsAdd, $scope.newlist.listOfSongs, function (o1, o2) {
+      return o1['id'] === o2['id']
+    });
   }
 
+  function deleteSongsInListEdit() {
+    $scope.listSongsEdit = _.differenceWith($scope.listSongsEdit, $scope.newlist.listOfSongs, function (o1, o2) {
+      return o1['id'] === o2['id']
+    });
+  }
+  function pushSongsInListEdit() {
+    $scope.listSongsEdit = _.differenceWith($scope.listSongsAdd, $scope.newlist.listOfSongs, function (o1, o2) {
+      return o1['id'] === o2['id']
+    });
+  }
 
 
 }]);
