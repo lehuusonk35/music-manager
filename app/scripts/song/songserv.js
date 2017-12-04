@@ -14,31 +14,39 @@ angular.module('myngappAppApp')
       {
         id: 0,
         name: 'Radioactive',
-        artist: 'Imagine Dragon',
-        isSelected:false
+        artist: 'Imagine Dragon'
       },
       {
         id: 1,
-        name: '	Rolling in the deep',
-        artist: '	Adele',
-        isSelected:false
+        name: 'Rolling in the deep',
+        artist: 'Adele'
       },
       {
         id: 2,
         name: 'Uninstall',
-        artist: 'Chiaki Isikawa',
-        isSelected:false
+        artist: 'Chiaki Isikawa'
       },
       {
         id: 3,
-        name: '	Viva la vida',
-        artist: 'Coldplay',
-        isSelected:false
+        name: 'Viva la vida',
+        artist: 'Coldplay'
       }
     ];
+
+    var songsSelectingList = {};
+    init();
+    this.songsSelectingList = songsSelectingList;
+
+    function init() {
+      //init selecting property
+      for(var i in songs){
+        songsSelectingList[songs[i].id] = false;
+      }
+    }
+
     this.save = function (song) {
-      if(typeof song.name !== 'undefined' && typeof song.artist !== 'undefined'){
-        if (song.id == null  || song.id == '') {
+      if( song.name !== '' && song.artist !== '' ){
+        if (!song.id) {
           song.id = oid++;
           songs.push(song);
         }
@@ -50,8 +58,9 @@ angular.module('myngappAppApp')
           }
         }
       }
+    };
 
-    }
+
     this.get = function (id) {
       for (var i = 0; i < songs.length; i++) {
         if (songs[i].id === id) {
@@ -59,32 +68,34 @@ angular.module('myngappAppApp')
         }
       }
 
-    }
+    };
+
     this.delete = function (id) {
       for (var i = 0; i < songs.length; i++) {
         if (songs[i].id === id) {
           songs.splice(i, 1);
+          break;
         }
       }
-    }
-    this.list = function () {
+    };
+    this.listsong = function () {
       return songs;
-    }
+    };
 
     this.action = {
       view : {
         id : 'main',
-        url : 'scripts/song/mainsong/mainsong.html',
+        url : 'scripts/song/mainsong/mainsong.html'
 
       },
       create : {
         id : 'create',
-        url : 'scripts/song/add/add.template.html',
+        url : 'scripts/song/add/add.template.html'
 
       },
       edit : {
         id : 'edit',
-        url : 'scripts/song/add/add.template.html',
+        url : 'scripts/song/add/add.template.html'
       }
     };
 

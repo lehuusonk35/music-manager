@@ -21,9 +21,7 @@ angular
         controllerAs: 'main'
       })
       .when('/playlist', {
-        templateUrl: 'views/playlist.html',
-        controller: 'PlayListCtrl',
-        controllerAs: 'vm'
+        template: '<play-list></play-list>'
       })
       .when('/song', {
         template: '<song-list></song-list>'
