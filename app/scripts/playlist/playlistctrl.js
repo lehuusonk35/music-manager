@@ -13,9 +13,8 @@ angular.module('myngappAppApp').controller('playListCtrl', ['$scope', 'playListS
   $scope.listSongsAdd = $scope.songs = SongService.listsong();
   $scope.listSongsEdit = [];
   $scope.selectedList = [];
-  $scope.selectedListAdd = [];
   $scope.selectedListEdit = [];
-  $scope.selectedListNewList = [];
+  $scope.selectedListNew = [];
   $scope.isSelectedAll = false;
   $scope.err = false;
   $scope.newlist = playListService.cache.listModel;
@@ -29,6 +28,9 @@ angular.module('myngappAppApp').controller('playListCtrl', ['$scope', 'playListS
       playListService.cache.reset();
       $scope.templateObj = playListService.cache.currAction = playListService.action.view;
       $scope.submitted = false;
+      for(var i in $scope.newlist.listOfSongs){
+        playListService.songsSelectingListNewList[$scope.newlist.listOfSongs[i].id] = false;
+      }
     }
     else {
       $scope.submitted = true;
@@ -39,9 +41,14 @@ angular.module('myngappAppApp').controller('playListCtrl', ['$scope', 'playListS
       playListService.edit(angular.copy($scope.newlist));
       $scope.listSongsAdd = $scope.songs;
       $scope.isSelectedAll = allChecked();
+
       playListService.cache.reset();
       $scope.templateObj = playListService.cache.currAction = playListService.action.view;
       $scope.submitted = false;
+      for(var i in $scope.newlist.listOfSongs){
+        playListService.songsSelectingListNewList[$scope.newlist.listOfSongs[i].id] = false;
+      }
+
     }
     else {
       $scope.submitted = true;
@@ -56,6 +63,7 @@ angular.module('myngappAppApp').controller('playListCtrl', ['$scope', 'playListS
       .cancel('No');
     $mdDialog.show(confirm).then(function() {
       playListService.delete(id);
+      $scope.selectedList = [];
     }, function() {
       $scope.status = 'You decided to keep your record.';
     });
@@ -76,26 +84,51 @@ angular.module('myngappAppApp').controller('playListCtrl', ['$scope', 'playListS
     playListService.cache.listModel = list;
     $scope.newlist = playListService.cache.listModel;
     $scope.templateObj = playListService.cache.currAction = playListService.action.edit;
-    /*$scope.templateObj = {
-     url: 'scripts/song/add/add.template.html',
-     id: 'edit'
-     }*/
+    for(var i in $scope.listSongsEdit){
+      playListService.songsSelectingListEditList[$scope.listSongsEdit[i].id] = false;
+    }
+    for(var i in $scope.newlist.listOfSongs){
+      playListService.songsSelectingListNewList[$scope.newlist.listOfSongs[i].id] = false;
+    }
   };
-  $scope.selectAllSongsEdit = function () {
-    $scope.isSelectedAll= !$scope.isSelectedAll;
-    $scope.selectedListEdit = [];
-    for(var i =0;i<$scope.lists.length;i++){
-      $scope.selectedListEdit[i].isSelectedSong = $scope.isSelectedAll;
-      if($scope.listSongsEdit[i].isSelectedSong){
-        $scope.selectedListEdit.push($scope.listSongsEdit[i]);
-      }
+
+$scope.checked = function () {
+  if ($scope.selectedList.length > 0) {
+    return false;
+  }
+  else {
+    return true;
+  }
+};
+  $scope.checkedEdit = function () {
+    if ($scope.selectedListEdit.length > 0) {
+      return false;
+    }
+    else {
+      return true;
+    }
+  };
+  $scope.checkedNew = function () {
+    if ($scope.selectedListNew.length > 0) {
+      return false;
+    }
+    else {
+      return true;
+    }
+  };
+  $scope.checkedAdd = function () {
+    if ($scope.selectedList.length > 0) {
+      return false;
+    }
+    else {
+      return true;
     }
   };
   $scope.selectAllList = function(){
-    $scope.isSelectedAll= !$scope.isSelectedAll;
+    $scope.isSelectedAllList= !$scope.isSelectedAllList;
     $scope.selectedList = [];
     for(var i =0;i<$scope.lists.length;i++){
-      $scope.lists[i].isSelected = $scope.isSelectedAll;
+      $scope.lists[i].isSelected = $scope.isSelectedAllList;
       if($scope.lists[i].isSelected){
         $scope.selectedList.push($scope.lists[i]);
       }
@@ -115,7 +148,7 @@ angular.module('myngappAppApp').controller('playListCtrl', ['$scope', 'playListS
         }
       }
     }
-    $scope.isSelectedAll = allChecked();
+    $scope.isSelectedAllList = allChecked();
   };
 
   function allChecked(){
@@ -129,13 +162,6 @@ angular.module('myngappAppApp').controller('playListCtrl', ['$scope', 'playListS
 
     return result;
   }
-  // $scope.prova = function(){
-  //   for(var i =0;i<$scope.songs.length;i++){
-  //     if($scope.songs[i].isSelected){
-  //       return true;
-  //     }
-  //   }
-  // };
   $scope.status = '';
 
   $scope.showConfirm = function(event) {
@@ -150,34 +176,26 @@ angular.module('myngappAppApp').controller('playListCtrl', ['$scope', 'playListS
         var id = $scope.selectedList[i].id;
         playListService.delete(id);
       }
+      $scope.selectedList = [];
     }, function() {
       $scope.status = 'You decided to keep your record.';
     });
   };
 
-  /*$scope.templateObj = {
-   url: 'scripts/song/mainsong/mainsong.html',
-   id: 'main'
-   };*/
 
   $scope.addPage = function () {
     $scope.songs.isSelected = false;
     $scope.newlist = playListService.cache.listModel;
     $scope.templateObj = playListService.cache.currAction = playListService.action.create;
-    // $scope.templateObj = {
-    //   url: 'scripts/song/add/add.template.html',
-    //   id: 'create'
-    // }
   };
   $scope.mainPlayList = function () {
-    //$scope.newsong = null;
-    playListService.cache.reset();
+
     $scope.listSongsAdd = $scope.songs;
     $scope.templateObj = playListService.cache.currAction = playListService.action.view;
-    /*$scope.templateObj = {
-     url: 'scripts/song/mainsong/mainsong.html',
-     id: 'main'
-     }*/
+    for(var i in $scope.newlist.listOfSongs){
+      playListService.songsSelectingListNewList[$scope.newlist.listOfSongs[i].id] = false;
+    }
+    playListService.cache.reset();
   };
   $scope.selectAllSongs = function(){
     $scope.isSelectedAll= !$scope.isSelectedAll;
@@ -189,17 +207,8 @@ angular.module('myngappAppApp').controller('playListCtrl', ['$scope', 'playListS
         $scope.selectedList.push($scope.songs[idx]);
       }
     }
-    // for(var i =0;i<$scope.songs.length;i++){
-    //   $scope.songs[i].isSelected = $scope.isSelectedAll;
-    //   if($scope.songs[i].isSelected){
-    //     $scope.selectedList.push($scope.songs[i]);
-    //   }
-    // }
   };
 
-  $scope.isSelectedSong = function (songId) {
-    return playListService.cache.songsSelectingList[songId];
-  };
 
   $scope.selectSong = function(song){
     // song.isSelected=!song.isSelected;
@@ -218,6 +227,10 @@ angular.module('myngappAppApp').controller('playListCtrl', ['$scope', 'playListS
     $scope.isSelectedAll = allCheckedSongs();
   };
 
+  $scope.isSelectedSong = function (songId) {
+    return playListService.cache.songsSelectingList[songId];
+  };
+
   function allCheckedSongs(){
     for(var i in playListService.cache.songsSelectingList){
       if(!playListService.cache.songsSelectingList[i]){
@@ -225,16 +238,9 @@ angular.module('myngappAppApp').controller('playListCtrl', ['$scope', 'playListS
       }
     }
     return true;
-    /*var result = true;
-    for(var i =0;i<$scope.songs.length;i++){
-      if(!$scope.songs[i].isSelected){
-        result = false;
-        break;
-      }
-    }
-
-    return result;*/
   }
+
+
   $scope.addSongAdd = function(event) {
     var confirm = $mdDialog.confirm()
       .title('Delete multiple songs')
@@ -253,6 +259,14 @@ angular.module('myngappAppApp').controller('playListCtrl', ['$scope', 'playListS
         // SongService.delete(id);
       }
       deleteSong();
+      for(var i in $scope.newlist.listOfSongs){
+        playListService.songsSelectingListNewList[$scope.newlist.listOfSongs[i].id] = false;
+      }
+      for(var i in playListService.cache.songsSelectingList){
+        playListService.cache.songsSelectingList[i] = false;
+      }
+
+      $scope.isSelectedAll = false;
     }, function() {
       $scope.status = 'You decided to keep your record.';
     });
@@ -277,6 +291,10 @@ angular.module('myngappAppApp').controller('playListCtrl', ['$scope', 'playListS
         }
         $scope.newlist.listOfSongs = _.unionBy($scope.newlist.listOfSongs, 'id');
       }
+      for(var i in $scope.newlist.listOfSongs){
+        playListService.songsSelectingListNewList[$scope.newlist.listOfSongs[i].id] = false;
+      }
+
     }, function() {
       $scope.status = 'You decided to keep your record.';
     });
@@ -321,6 +339,7 @@ angular.module('myngappAppApp').controller('playListCtrl', ['$scope', 'playListS
         }
         $scope.newlist.listOfSongs = _.unionBy($scope.newlist.listOfSongs, 'id');
       }
+
       deleteSongsInListEdit();
     }, function() {
       $scope.status = 'You decided to keep your record.';
@@ -335,14 +354,22 @@ angular.module('myngappAppApp').controller('playListCtrl', ['$scope', 'playListS
       .ok('Yes')
       .cancel('No');
     $mdDialog.show(confirm).then(function() {
-      for ( var i = 0; i < $scope.selectedList.length; i++) {
+      for ( var i = 0; i < $scope.selectedListEdit.length; i++) {
         /*var id = $scope.selectedList[i].id;
          var name = $scope.selectedList[i].name;
          var artist = $scope.selectedList[i].artist;*/
         // $scope.selectedList.name.push($scope.lists.listOfSongs[i]);
-        $scope.newlist.listOfSongs.push($scope.selectedList[i]);
+        $scope.newlist.listOfSongs.push($scope.selectedListEdit[i]);
         $scope.newlist.listOfSongs = _.unionBy($scope.newlist.listOfSongs, 'id');
       }
+      for(var i in $scope.listSongsEdit){
+        playListService.songsSelectingListEditList[$scope.listSongsEdit[i].id] = false;
+      }
+      for(var i in $scope.newlist.listOfSongs){
+        playListService.songsSelectingListNewList[$scope.newlist.listOfSongs[i].id] = false;
+      }
+      $scope.selectedListEdit = [];
+      $scope.isSelectedAllEdit = false;
       deleteSongsInListEdit();
     }, function() {
       $scope.status = 'You decided to keep your record.';
@@ -350,7 +377,7 @@ angular.module('myngappAppApp').controller('playListCtrl', ['$scope', 'playListS
   };
 
   $scope.delSongEdit = function(id) {
-    var confirm = confirmDialog('xoa 1 bai','day la chac xoa nha');
+    var confirm = confirmDialog('Đây là xóa 1 bài nha !','Xóa là mất luôn đó ! Chắc xóa không ?');
     $mdDialog.show(confirm).then(function() {
       for ( var i = 0; i < $scope.newlist.listOfSongs.length; i++) {
         if($scope.newlist.listOfSongs[i].id === id) {
@@ -358,24 +385,83 @@ angular.module('myngappAppApp').controller('playListCtrl', ['$scope', 'playListS
         }
       }
       pushSongsInListEdit();
+      for(var i in $scope.listSongsEdit){
+        playListService.songsSelectingListEditList[$scope.listSongsEdit[i].id] = false;
+      }
+      $scope.selectedListEdit = [];
+      $scope.isSelectedAllEdit = false;
     }, function() {
       $scope.status = 'You decided to keep your record.';
     });
   };
 
   $scope.delSongEditAll = function(event) {
-    var confirm = confirmDialog('','');
+    var confirm = confirmDialog('Đây là xóa nhiều bài 1 lúc nhé !','Không nên nhé ! Nếu tiếp tục thì bấm Ok');
     $mdDialog.show(confirm).then(function() {
-      for ( var i = 0; i < $scope.selectedList.length; i++) {
-        $scope.newlist.listOfSongs = _.differenceWith($scope.newlist.listOfSongs, $scope.selectedList, function (o1, o2) {
-          return o1['id'] === o2['id']
-        });
+      $scope.newlist.listOfSongs = _.differenceWith($scope.newlist.listOfSongs, $scope.selectedListNew, function (o1, o2) {
+        return o1['id'] === o2['id']
+      });
+      $scope.listSongsEdit = $scope.selectedListNew;
+      //$scope.selectedListNew = [];
+      $scope.isSelectedAllNewList = false;
+      for(var i in $scope.selectedListNew){
+        playListService.songsSelectingListNewList[$scope.selectedListNew[i].id] = false;
       }
-      pushSongsInListEdit();
+      $scope.selectedListNew = [];
+      //pushSongsInListEdit();
+      for(var i in $scope.listSongsEdit){
+        playListService.songsSelectingListEditList[$scope.listSongsEdit[i].id] = false;
+      }
     }, function() {
       $scope.status = 'You decided to keep your record.';
     });
   };
+
+  $scope.delSongAdd = function(id) {
+    var confirm = confirmDialog('Đây là xóa 1 bài nha !','Xóa là mất luôn đó ! Chắc xóa không ?');
+    $mdDialog.show(confirm).then(function() {
+      for ( var i = 0; i < $scope.newlist.listOfSongs.length; i++) {
+        if($scope.newlist.listOfSongs[i].id === id) {
+          $scope.listSongsAdd.push($scope.newlist.listOfSongs[i]);
+          $scope.newlist.listOfSongs.splice(i, 1);
+        }
+      }
+      $scope.selectedListNew = [];
+      $scope.isSelectedAllNewList = false;
+      // pushSongsInListAdd();
+    }, function() {
+      $scope.status = 'You decided to keep your record.';
+    });
+  };
+
+  $scope.delSongAddAll = function(event) {
+    var confirm = confirmDialog('Đây là xóa nhiều bài 1 lúc nhé !','Không nên nhé ! Nếu tiếp tục thì bấm Ok');
+    $mdDialog.show(confirm).then(function() {
+      for ( var i = 0; i < $scope.selectedListNew.length; i++) {
+        $scope.listSongsAdd.push($scope.selectedListNew[i]);
+        $scope.newlist.listOfSongs.splice(findIndexInArray($scope.newlist.listOfSongs, $scope.selectedListNew[i]), 1);
+      }
+      $scope.selectedListNew = [];
+      $scope.isSelectedAllNewList = false;
+      //pushSongsInListAdd();
+      // $scope.listSongsAdd = _.differenceWith($scope.newlist.listOfSongs, $scope.selectedListNew, function (o1, o2) {
+      //   return o1['id'] === o2['id']
+      // });
+
+
+    }, function() {
+      $scope.status = 'You decided to keep your record.';
+    });
+  };
+
+  function findIndexInArray(array, obj){
+    for(var i in array){
+      if(array[i] === obj){
+        return i;
+      }
+    }
+    return -1;
+  }
 
   function deleteSong() {
     $scope.listSongsAdd = _.differenceWith($scope.listSongsAdd, $scope.newlist.listOfSongs, function (o1, o2) {
@@ -400,6 +486,95 @@ angular.module('myngappAppApp').controller('playListCtrl', ['$scope', 'playListS
       return o1['id'] === o2['id']
     });
   }
+
+
+  $scope.selectAllListSongs = function(){
+    $scope.isSelectedAllNewList= !$scope.isSelectedAllNewList;
+    $scope.selectedListNew = [];
+    for(var i in playListService.songsSelectingListNewList){
+      playListService.songsSelectingListNewList[i] = $scope.isSelectedAllNewList;
+      if(playListService.songsSelectingListNewList[i]){
+        var idx = Object.keys(playListService.songsSelectingListNewList).indexOf(i);
+        $scope.selectedListNew.push($scope.newlist.listOfSongs[idx]);
+      }
+    }
+  };
+
+  $scope.selectASongList = function(song){
+    playListService.songsSelectingListNewList[song.id] = !playListService.songsSelectingListNewList[song.id];
+    if(playListService.songsSelectingListNewList[song.id]){
+      $scope.selectedListNew.push(song);
+    }
+    else {
+      for(var i =0;i<$scope.selectedListNew.length;i++){
+        if($scope.selectedListNew[i].id === song.id){
+          $scope.selectedListNew.splice(i,1);
+          break;
+        }
+      }
+    }
+    $scope.isSelectedAllNewList = allCheckedOneList();
+  };
+
+  $scope.isSelectedOneList = function (songId) {
+    return playListService.songsSelectingListNewList[songId];
+  };
+
+  function allCheckedOneList(){
+    for(var i in playListService.songsSelectingListNewList){
+      if(!playListService.songsSelectingListNewList[i]){
+        return false
+      }
+    }
+    return true;
+  }
+
+
+
+  $scope.selectAllSongsEdit = function(){
+    $scope.isSelectedAllEdit = !$scope.isSelectedAllEdit;
+    $scope.selectedListEdit = [];
+    for(var i in playListService.songsSelectingListEditList){
+
+      playListService.songsSelectingListEditList[i] = $scope.isSelectedAllEdit;
+      if(playListService.songsSelectingListEditList[i]){
+        var idx = Object.keys(playListService.songsSelectingListEditList).indexOf(i);
+        if($scope.listSongsEdit[idx]){
+          $scope.selectedListEdit.push($scope.listSongsEdit[idx]);
+        }
+      }
+    }
+  };
+
+  $scope.selectSongEdit = function(song){
+    playListService.songsSelectingListEditList[song.id] = !playListService.songsSelectingListEditList[song.id];
+    if(playListService.songsSelectingListEditList[song.id]){
+      $scope.selectedListEdit.push(song);
+    }
+    else {
+      for(var i =0;i<$scope.selectedListEdit.length;i++){
+        if($scope.selectedListEdit[i].id === song.id){
+          $scope.selectedListEdit.splice(i,1);
+          break;
+        }
+      }
+    }
+    $scope.isSelectedAllEdit = allCheckedOneListEdit();
+  };
+
+  $scope.isSelectedSongEdit = function (songId) {
+    return playListService.songsSelectingListEditList[songId];
+  };
+
+  function allCheckedOneListEdit (){
+    for(var i in playListService.songsSelectingListEditList){
+      if(!playListService.songsSelectingListEditList[i]){
+        return false
+      }
+    }
+    return true;
+  }
+
 
 
 }]);

@@ -9,6 +9,7 @@
  */
 angular.module('myngappAppApp')
   .service('playListService', function (SongService) {
+
     var oid = 4;
     var songs = SongService.listsong();
     var lists = [
@@ -41,39 +42,15 @@ angular.module('myngappAppApp')
         isSelected:false
       }
     ];
-// //this is select form add
-//     var songsSelectingListEditList = {};
-//     init();
-//     this.songsSelectingListEditList = songsSelectingListEditList;
-//
-//     function init() {
-//       //init selecting property
-//       for(var i in songs){
-//         songsSelectingListEditList[songs[i].id] = false;
-//       }
-//     }
-//     //this is select form edit
-//     var songsSelectingListAddList = {};
-//     init();
-//     this.songsSelectingListAddList = songsSelectingListAddList;
-//
-//     function init() {
-//       //init selecting property
-//       for(var i in songs){
-//         songsSelectingListAddList[songs[i].id] = false;
-//       }
-//     }
-//     //this is select form newlist
-//     var songsSelectingListNewList = {};
-//     init();
-//     this.songsSelectingListNewList = songsSelectingListNewList;
-//
-//     function init() {
-//       //init selecting property
-//       for(var i in songs){
-//         songsSelectingListNewList[songs[i].id] = false;
-//       }
-//     }
+
+    //this is select form edit
+    var songsSelectingListEditList = {};
+    this.songsSelectingListEditList = songsSelectingListEditList;
+
+
+    //this is select form newlist
+    var songsSelectingListNewList = {};
+    this.songsSelectingListNewList = songsSelectingListNewList;
 
     this.save = function (list) {
       if( list.name !== '' && list.desc !== '' ){
@@ -155,14 +132,29 @@ angular.module('myngappAppApp')
     };
     this.cache = cache;
 
-    init();
-
     function init() {
+      //init selecting property
+      // for(var i in songs){
+      //   songsSelectingListEditList[songs[i].id] = false;
+      // }
+
+      //init selecting property
+      // for(var i in listSongsEdit){
+      //   songsSelectingListAddList[listSongsEdit[i].id] = false;
+      // }
+
+      //init selecting property
+      // for(var i in newlist.listOfSongs){
+      //   songsSelectingListNewList[newlist.listOfSongs[i].id] = false;
+      // }
+
       //init selecting property
       var songs = SongService.listsong();
       for(var i in songs){
         cache.songsSelectingList[songs[i].id] = false;
       }
     }
+    init();
+
 
   });

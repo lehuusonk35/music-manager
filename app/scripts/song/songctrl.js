@@ -66,16 +66,9 @@ angular.module('myngappAppApp').controller('SongCtrl', ['$scope', 'SongService',
         $scope.selectedList.push($scope.songs[idx]);
       }
     }
-    // for(var i =0;i<$scope.songs.length;i++){
-    //   $scope.songs[i].isSelected = $scope.isSelectedAll;
-    //   if($scope.songs[i].isSelected){
-    //     $scope.selectedList.push($scope.songs[i]);
-    //   }
-    // }
   };
 
   $scope.selectSong = function(song){
-    // song.isSelected=!song.isSelected;
     SongService.songsSelectingList[song.id] = !SongService.songsSelectingList[song.id];
     if(SongService.songsSelectingList[song.id]){
       $scope.selectedList.push(song);
@@ -96,21 +89,12 @@ angular.module('myngappAppApp').controller('SongCtrl', ['$scope', 'SongService',
   };
 
   function allChecked(){
-    // var result = true;
     for(var i in SongService.songsSelectingList){
       if(!SongService.songsSelectingList[i]){
         return false
       }
     }
     return true;
-    // for(var i =0;i<$scope.songs.length;i++){
-    //   if(!$scope.songs[i].isSelected){
-    //     result = false;
-    //     break;
-    //   }
-    // }
-
-    // return result;
   }
   // $scope.prova = function(){
   //   for(var i =0;i<$scope.songs.length;i++){
