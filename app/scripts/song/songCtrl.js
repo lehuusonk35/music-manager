@@ -24,6 +24,7 @@ angular.module('myngappAppApp').controller('SongCtrl', ['$scope', 'SongService',
       SongService.cache.reset();
       $scope.templateObj = SongService.cache.currAction = SongService.action.view;
       $scope.submitted = false;
+
     }
     else {
       //alert('cant song name and song artist empty ');
@@ -41,6 +42,7 @@ angular.module('myngappAppApp').controller('SongCtrl', ['$scope', 'SongService',
       .cancel('No');
     $mdDialog.show(confirm).then(function() {
       SongService.delete(id);
+      SongService.songsSelectingList.del(id);
     }, function() {
       $scope.status = 'You decided to keep your record.';
     });

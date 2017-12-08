@@ -92,38 +92,7 @@ angular.module('myngappAppApp').controller('playListCtrl', ['$scope', 'playListS
     }
   };
 
-$scope.checked = function () {
-  if ($scope.selectedList.length > 0) {
-    return false;
-  }
-  else {
-    return true;
-  }
-};
-  $scope.checkedEdit = function () {
-    if ($scope.selectedListEdit.length > 0) {
-      return false;
-    }
-    else {
-      return true;
-    }
-  };
-  $scope.checkedNew = function () {
-    if ($scope.selectedListNew.length > 0) {
-      return false;
-    }
-    else {
-      return true;
-    }
-  };
-  $scope.checkedAdd = function () {
-    if ($scope.selectedList.length > 0) {
-      return false;
-    }
-    else {
-      return true;
-    }
-  };
+
   $scope.selectAllList = function(){
     $scope.isSelectedAllList= !$scope.isSelectedAllList;
     $scope.selectedList = [];
@@ -265,7 +234,7 @@ $scope.checked = function () {
       for(var i in playListService.cache.songsSelectingList){
         playListService.cache.songsSelectingList[i] = false;
       }
-
+      $scope.selectedList = [];
       $scope.isSelectedAll = false;
     }, function() {
       $scope.status = 'You decided to keep your record.';
@@ -294,11 +263,29 @@ $scope.checked = function () {
       for(var i in $scope.newlist.listOfSongs){
         playListService.songsSelectingListNewList[$scope.newlist.listOfSongs[i].id] = false;
       }
-
+      removeItemFromSelectedList(id);
     }, function() {
       $scope.status = 'You decided to keep your record.';
     });
   };
+
+  function removeItemFromSelectedList(id) {
+    for(var i in $scope.selectedList){
+      if($scope.selectedList[i].id === id){
+        $scope.selectedList.splice(i, 1);
+        break;
+      }
+    }
+  }
+
+  function removeItemFromSelectedListNew(id) {
+    for(var i in $scope.selectedListNew){
+      if($scope.selectedListNew[i].id === id){
+        $scope.selectedListNew.splice(i, 1);
+        break;
+      }
+    }
+  }
 
   $scope.addSongEdit = function(event) {
     var confirm = $mdDialog.confirm()
@@ -344,6 +331,13 @@ $scope.checked = function () {
     }, function() {
       $scope.status = 'You decided to keep your record.';
     });
+  };
+
+  $scope.isSelectAnyItemsFromAdd = function () {
+    return $scope.selectedList.length > 0;
+  };
+  $scope.isSelectAnyItemsFromNew = function () {
+    return $scope.selectedListNew.length > 0;
   };
 
   $scope.addSongEdit = function(event) {
@@ -401,16 +395,18 @@ $scope.checked = function () {
       $scope.newlist.listOfSongs = _.differenceWith($scope.newlist.listOfSongs, $scope.selectedListNew, function (o1, o2) {
         return o1['id'] === o2['id']
       });
-      $scope.listSongsEdit = $scope.selectedListNew;
+      // $scope.listSongsEdit = $scope.selectedListNew;
       //$scope.selectedListNew = [];
       $scope.isSelectedAllNewList = false;
       for(var i in $scope.selectedListNew){
         playListService.songsSelectingListNewList[$scope.selectedListNew[i].id] = false;
       }
       $scope.selectedListNew = [];
-      //pushSongsInListEdit();
+      pushSongsInListEdit();
       for(var i in $scope.listSongsEdit){
-        playListService.songsSelectingListEditList[$scope.listSongsEdit[i].id] = false;
+        if($scope.listSongsEdit[i].id) {
+          playListService.songsSelectingListEditList[$scope.listSongsEdit[i].id] = false;
+        }
       }
     }, function() {
       $scope.status = 'You decided to keep your record.';
@@ -426,8 +422,9 @@ $scope.checked = function () {
           $scope.newlist.listOfSongs.splice(i, 1);
         }
       }
-      $scope.selectedListNew = [];
-      $scope.isSelectedAllNewList = false;
+      // $scope.selectedListNew = [];
+      // $scope.isSelectedAllNewList = false;
+      removeItemFromSelectedListNew(id);
       // pushSongsInListAdd();
     }, function() {
       $scope.status = 'You decided to keep your record.';

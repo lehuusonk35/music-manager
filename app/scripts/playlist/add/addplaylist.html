@@ -10,29 +10,29 @@
   </div>
   <div class="form-group">
     <label>All Song in Application</label>
-    <input type="button" value="Add multiple songs"  ng-click = "addSongAdd($event)"  class="btn btn-primary" />
+    <input type="button" value="Add multiple songs"  ng-click = "addSongAdd($event)" ng-disabled="!isSelectAnyItemsFromAdd()" class="btn btn-primary" />
   </div>
   <table class="table table-bordered table-striped table-reponsive">
     <thead>
     <tr class="title-table">
-      <th><input type="checkbox" ng-checked="isSelectedAll"  ng-click="selectAllSongs()" /></th>
+      <th><input type="checkbox" ng-checked="isSelectedAll"  ng-click="selectAllSongs()"/></th>
       <th>Name</th>
       <th>Artist</th>
       <th>Action</th>
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="song in listSongsAdd">
-      <td><input type="checkbox" ng-checked="isSelectedSong(song.id)" ng-click="selectSong(song)"  /></td>
-      <td>{{song.name}}</td>
-      <td>{{song.artist}}</td>
-      <td class="action"><a ng-click="addSongToListAdd(song.id)"><span class="glyphicon glyphicon-edit"></span> Add song to playlist</a></td>
+    <tr ng-repeat="songad in listSongsAdd">
+      <td><input type="checkbox" ng-checked="isSelectedSong(songad.id)" ng-click="selectSong(songad)"  /></td>
+      <td>{{songad.name}}</td>
+      <td>{{songad.artist}}</td>
+      <td class="action"><a ng-click="addSongToListAdd(songad.id)"><span class="glyphicon glyphicon-edit"></span> Add song to playlist</a></td>
     </tr>
     </tbody>
   </table>
   <div class="form-group">
     <label>List Song in play list</label>
-    <input type="button" value="Remove multiple Song" ng-click = "delSongAddAll($event)" ng-disabled="checkedNew()" class="btn btn-primary" />
+    <input type="button" value="Remove multiple Song" ng-click = "delSongAddAll($event)" ng-disabled="!isSelectAnyItemsFromNew()" class="btn btn-primary" />
   </div>
     <table class="table table-bordered table-striped table-reponsive">
       <thead>
@@ -45,7 +45,7 @@
       </thead>
       <tbody>
       <tr ng-repeat="song in newlist.listOfSongs">
-        <td><input type="checkbox" ng-checked="isSelectedOneList(song.id)" ng-click="selectASongList(song)" ng-model="checkedNew()"/></td>
+        <td><input type="checkbox" ng-checked="isSelectedOneList(song.id)" ng-click="selectASongList(song)" /></td>
         <td>{{song.name}}</td>
         <td>{{song.artist}}</td>
         <td class="action"><a ng-click="delSongAdd(song.id)"><span class="glyphicon glyphicon-edit"></span>Remove song in play list</a></td>

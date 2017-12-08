@@ -33,7 +33,19 @@ angular.module('myngappAppApp')
       }
     ];
 
-    var songsSelectingList = {};
+    var songsSelectingList = {
+      del : function (id) {
+        delete this[id];
+      },
+      add : function (id) {
+        if(!angular.isUndefined(this[id])){
+          console.log("warning :record exist!!!!");
+        }
+        else{
+          this[id] = false;
+        }
+      }
+    };
     init();
     this.songsSelectingList = songsSelectingList;
 
@@ -42,6 +54,7 @@ angular.module('myngappAppApp')
       for(var i in songs){
         songsSelectingList[songs[i].id] = false;
       }
+
     }
 
     this.save = function (song) {
@@ -49,6 +62,7 @@ angular.module('myngappAppApp')
         if (!song.id) {
           song.id = oid++;
           songs.push(song);
+          songsSelectingList.add(song.id);
         }
         else {
           for (var i = 0; i < songs.length; i++) {
