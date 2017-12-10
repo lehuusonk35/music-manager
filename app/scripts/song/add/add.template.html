@@ -9,9 +9,9 @@
     <input class="form-control" type="text" name="email" ng-model="newsong.artist" />
   </div>
   <br/>
-  <input type="hidden" ng-model="newsong.id" />
-  <input type="button" ng-show="templateObj.id === 'create'" value="Save" ng-click="saveSong(true)" class="btn btn-primary" />
-  <input type="button" ng-show="templateObj.id === 'edit'" value="Edit" ng-click="saveSong(false)" class="btn btn-primary" />
-  <input type="button"  value="Cancel" ng-click="mainSong()" class="btn btn-primary" />
+  <md-button class = "md-primary md-raised hidden" ng-model="newsong.id"></md-button>
+  <md-button class = "md-primary md-raised" ng-show="templateObj.id === 'create'" ng-click="saveSong(true)" >Save</md-button>
+  <md-button class = "md-primary md-raised" ng-show="templateObj.id === 'edit'"  ng-click="saveSong(false)" >Edit</md-button>
+  <md-button class = "md-primary md-raised"  ng-click="mainSong()" >Cancel</md-button>
 
 </form>

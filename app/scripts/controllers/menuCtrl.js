@@ -14,4 +14,5 @@ angular.module('myngappAppApp')
     this.toggle = function () {
       this.navOpen = !this.navOpen;
     };
+
   });

@@ -8,7 +8,7 @@
  * Controller of the myngappAppApp
  */
 
-angular.module('myngappAppApp').controller('SongCtrl', ['$scope', 'SongService', '$mdDialog' ,function ($scope, SongService, $mdDialog) {
+angular.module('myngappAppApp').controller('SongCtrl', ['$scope', 'SongService', '$mdDialog', function ($scope, SongService, $mdDialog) {
   $scope.songs = SongService.listsong();
   $scope.bread = 'Song';
   $scope.title = 'Manage Songs';
@@ -43,6 +43,7 @@ angular.module('myngappAppApp').controller('SongCtrl', ['$scope', 'SongService',
     $mdDialog.show(confirm).then(function() {
       SongService.delete(id);
       SongService.songsSelectingList.del(id);
+      removeItemFromSelectedSong(id);
     }, function() {
       $scope.status = 'You decided to keep your record.';
     });
@@ -145,5 +146,18 @@ angular.module('myngappAppApp').controller('SongCtrl', ['$scope', 'SongService',
       url: 'scripts/song/mainsong/mainsong.html',
       id: 'main'
     }*/
+  };
+  //remove song form slectedSong
+  function removeItemFromSelectedSong(id) {
+    for(var i in $scope.selectedList){
+      if($scope.selectedList[i].id === id){
+        $scope.selectedList.splice(i, 1);
+        break;
+      }
+    }
+  }
+  //remove song when
+  $scope.isSelectAnyItemsFromSongs = function () {
+    return $scope.selectedList.length > 0;
   };
 }]);

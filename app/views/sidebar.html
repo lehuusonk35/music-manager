@@ -1,9 +1,8 @@
 <aside class="col-md-3">
-  <div class="widget">
+  <div class="widget" ng-controller="activeMenuCtrl">
     <nav>
       <ul class="menu-sidebar">
-        <li class="active"><a ng-href="#!/song">Song</a></li>
-        <li><a ng-href="#!/playlist">Play List</a></li>
+        <li ng-repeat='item in menuItems' class="menusidebar" ng-class="{active : activeMenu === item.geturl}"><a ng-href="{{item.geturl}}" ng-click="setActive(item.geturl)"> {{item.nameurl}}</a></li>
       </ul>
     </nav>
   </div>

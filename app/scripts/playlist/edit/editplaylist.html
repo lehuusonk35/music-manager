@@ -10,7 +10,7 @@
   </div>
   <div class="form-group">
     <label>All song in Application</label>
-    <input type="button" value="Add multiple songs" ng-click = "addSongEdit($event)" ng-disabled="checkedEdit()" class="btn btn-primary" />
+    <md-button class = "md-primary md-raised" ng-click = "addSongEdit($event)" ng-disabled= "!isSelectAnyItemsFromEdit()"">Add multiple songs</md-button>
   </div>
   <table class="table table-bordered table-striped table-reponsive">
     <thead>
@@ -23,16 +23,16 @@
     </thead>
     <tbody>
     <tr ng-repeat="song in listSongsEdit">
-      <td><input type="checkbox" ng-checked="isSelectedSongEdit(song.id)" ng-click="selectSongEdit(song)" ng-model="checkedEdit"/></td>
+      <td><input type="checkbox" ng-checked="isSelectedSongEdit(song.id)" ng-click="selectSongEdit(song)" /></td>
       <td>{{song.name}}</td>
       <td>{{song.artist}}</td>
-      <td class="action"><a ng-click="addSongToListEdit(song.id)"><span class="glyphicon glyphicon-edit"></span> Add song to play list</a></td>
+      <td class="action"><md-button class = "md-primary md-raised"  ng-click="addSongToListEdit(song.id)"><span class="glyphicon glyphicon-edit"></span> Add song to play list</md-button></td>
     </tr>
     </tbody>
   </table>
   <div class="form-group">
     <label>Song in play list</label>
-    <input type="button" value="Remove multiple songs" ng-click = "delSongEditAll($event)"  class="btn btn-primary" />
+    <md-button class = "md-primary md-raised" ng-click = "delSongEditAll($event)" ng-disabled= "!isSelectAnyItemsFromNew()">Remove multiple songs</md-button>
   </div>
   <table class="table table-bordered table-striped table-reponsive">
     <thead>
@@ -48,13 +48,13 @@
       <td><input type="checkbox" ng-checked="isSelectedOneList(song.id)" ng-click="selectASongList(song)" ng-model="checkedNew"/></td>
       <td>{{song.name}}</td>
       <td>{{song.artist}}</td>
-      <td class="action"><a ng-click="delSongEdit(song.id)"><span class="glyphicon glyphicon-edit"></span>Remove song play list</a></td>
+      <td class="action"><md-button class = "md-primary md-raised" ng-click="delSongEdit(song.id)"><span class="glyphicon glyphicon-edit"></span>Remove song play list</md-button></td>
     </tr>
     </tbody>
   </table>
   <br/>
-  <input type="hidden" ng-model="newlist.id" />
-  <input type="button" ng-show="templateObj.id === 'edit'" value="Edit" ng-click="editPlayList(list)" class="btn btn-primary" />
-  <input type="button"  value="Cancel" ng-click="mainPlayList()" class="btn btn-primary" />
+  <md-button class = "md-primary md-raised hidden" ng-model="newlist.id" ></md-button>
+  <md-button class = "md-primary md-raised" ng-show="templateObj.id === 'edit'" ng-click="editPlayList(list)">Edit</md-button>
+  <md-button class = "md-primary md-raised" ng-click="mainPlayList()" >Cancel</md-button>
 
 </form>

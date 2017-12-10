@@ -4,7 +4,7 @@
   <div class="tool-main">
     <div class="add-song" ng-show="!test"><md-button class = "md-primary md-raised" ng-click="addPage()"><span class="glyphicon glyphicon-plus"></span> Add</md-button></div>
     <div class="detele-song" ng-show="!test">
-      <md-button class = "md-primary md-raised" ng-disabled="checked()" ng-click = "showConfirm($event)" flex = "100"  flex-gt-md = "auto">Delete</md-button>
+      <md-button class = "md-primary md-raised" ng-disabled="!isSelectAnyItemsFromAdd()" ng-click = "showConfirm($event)" flex = "100"  flex-gt-md = "auto">Delete</md-button>
     </div>
     <div class="search-song">
       <md-button class = "md-primary md-raised" ng-init="test = false" ng-click="test = !test">
@@ -28,10 +28,10 @@
   </thead>
   <tbody>
   <tr ng-repeat="list in lists | filter: query">
-    <td><input type="checkbox" ng-checked="list.isSelected" ng-click="selectList(list)" ng-model="checked"/></td>
+    <td><input type="checkbox" ng-checked="list.isSelected" ng-click="selectList(list)"/></td>
     <td>{{list.name}}</td>
     <td>{{list.desc}}</td>
-    <td class="action"><a ng-click="edit(list.id)"><span class="glyphicon glyphicon-edit"></span> Edit</a><a ng-click="delete(list.id)"><span class="glyphicon glyphicon-trash"></span> Detele</a></td>
+    <td class="action"><md-button class = "md-primary md-raised" ng-click="edit(list.id)"><span class="glyphicon glyphicon-edit"></span> Edit</md-button><md-button class = "md-primary md-raised" ng-click="delete(list.id)"><span class="glyphicon glyphicon-trash"></span> Delete</md-button></td>
   </tr>
   </tbody>
 </table>
